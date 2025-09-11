@@ -1,14 +1,18 @@
 package se.iths.cecilia.gissanumret;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Inputhandler {
     Scanner sc = new Scanner(System.in);
-    private Object UserPlayAgain;
 
     public int UserInputNumber() {
-        System.out.print("Gissa: ");
-        return sc.nextInt();
+        try {
+            System.out.print("Gissa: ");
+            return sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("Invalid input. Enter again.");
+        }
     }
 
     public void UserPlayAgain() {
@@ -16,9 +20,9 @@ public class Inputhandler {
         int input = sc.nextInt();
         if (input == 1) {
             Game game = new Game();
-            game.GuessNumber();
-            UserPlayAgain();
+            game.chooseLevel();
         } else {
+            sc.close();
             System.exit(0);
         }
     }
