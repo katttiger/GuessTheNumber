@@ -1,99 +1,92 @@
 package se.iths.cecilia.gissanumret;
 
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
     Inputhandler inputhandler = new Inputhandler();
-    Scanner sc = new Scanner(System.in);
-    int level;
-    boolean guessIncorrect = true;
-    int antalGissningar = 0;
+    Scanner sc;
+    int myNumber;
+    boolean guessIncorrect;
+    int antalGissningar;
 
-    public void chooseLevel() throws InputMismatchException {
-        System.out.println("Enter level of difficulty:" +
-                "\n1) Easy" +
-                "\n2) Normal" +
-                "\n3) Hard");
-        level = sc.nextInt();
-        switch (level) {
-            case 1:
-                GuessNumberEasy();
-                break;
-            case 2:
-                GuessNumberNormal();
-                break;
-            case 3:
-                GuessNumberDifficult();
-                break;
-            default:
-                System.out.println("Level does not exist");
-                break;
-        }
-
+    public Game() {
+        this.inputhandler = new Inputhandler();
+        this.sc = new Scanner(System.in);
+        this.myNumber = 0;
+        this.guessIncorrect = true;
+        this.antalGissningar = 0;
     }
 
-    public void GuessNumberEasy() {
-        guessIncorrect = true;
+    public void guessNumberEasy() {
         antalGissningar = 10;
-        int myNumber = GenerateNumber(50);
+        myNumber = generateNumber(51);
+
+        System.out.println("Number is between 0-50.");
 
         do {
-            System.out.println("Antal gissningar kvar: " + antalGissningar);
-            int userNumber = inputhandler.UserInputNumber();
-            guessIncorrect = CompareUserNumberAndMyNumber(userNumber, myNumber);
-            antalGissningar--;
+            guessIncorrect = gameLogic(antalGissningar);
         } while (guessIncorrect && antalGissningar != 0);
 
         if (antalGissningar == 0 && guessIncorrect) {
             System.out.println("You are out of moves. \n Correct answer: " + myNumber);
         }
-        inputhandler.UserPlayAgain();
+        inputhandler.userPlayAgain();
     }
 
-    public void GuessNumberNormal() {
-        guessIncorrect = true;
+    public void guessNumberNormal() {
         antalGissningar = 8;
-        int myNumber = GenerateNumber(100);
+        myNumber = generateNumber(101);
+
+        System.out.println("Number is between 0-100.");
 
         do {
-            System.out.println("Antal gissningar kvar: " + antalGissningar);
-            int userNumber = inputhandler.UserInputNumber();
-            guessIncorrect = CompareUserNumberAndMyNumber(userNumber, myNumber);
-            antalGissningar--;
+            guessIncorrect = gameLogic(antalGissningar);
         } while (guessIncorrect && antalGissningar != 0);
 
         if (antalGissningar == 0 && guessIncorrect) {
             System.out.println("You are out of moves. \n Correct answer: " + myNumber);
         }
-        inputhandler.UserPlayAgain();
+        inputhandler.userPlayAgain();
     }
 
-    public void GuessNumberDifficult() {
-        guessIncorrect = true;
+    public void guessNumberDifficult() {
         antalGissningar = 12;
-        int myNumber = GenerateNumber(1000);
+        myNumber = generateNumber(1001);
+
+        System.out.println("Number is between 0-1000.");
+
 
         do {
-            System.out.println("Antal gissningar kvar: " + antalGissningar);
-            int userNumber = inputhandler.UserInputNumber();
-            guessIncorrect = CompareUserNumberAndMyNumber(userNumber, myNumber);
-            antalGissningar--;
+            guessIncorrect = gameLogic(antalGissningar);
         } while (guessIncorrect && antalGissningar != 0);
 
         if (antalGissningar == 0 && guessIncorrect) {
             System.out.println("You are out of moves. \n Correct answer: " + myNumber);
         }
-        inputhandler.UserPlayAgain();
+        inputhandler.userPlayAgain();
     }
 
-    public int GenerateNumber(int bound) {
+    public boolean gameLogic(int antalGissningar) {
+        System.out.println("Antal gissningar kvar: " + antalGissningar);
+
+        int userNumber = 0;
+        userNumber = inputhandler.userNumberInputCheck();
+        guessIncorrect = compareUserNumberAndMyNumber(userNumber, myNumber);
+        this.antalGissningar--;
+        if (guessIncorrect) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int generateNumber(int bound) {
         Random rand = new Random();
         return rand.nextInt(bound);
     }
 
-    public boolean CompareUserNumberAndMyNumber(int userNumber, int myNumber) {
+    public boolean compareUserNumberAndMyNumber(int userNumber, int myNumber) {
         if (userNumber < myNumber) {
             System.out.println("Du gissar för lågt.");
             return true;
