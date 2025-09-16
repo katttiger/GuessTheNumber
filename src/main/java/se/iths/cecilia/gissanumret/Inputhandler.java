@@ -14,7 +14,7 @@ public class Inputhandler {
             return userNumber;
         } catch
         (InputMismatchException e) {
-            System.out.println("Wrong input");
+            System.out.println("Wrong input. Try again.");
             sc.nextLine();
         }
         return userNumber;
@@ -51,7 +51,7 @@ public class Inputhandler {
                 System.out.println("Level does not exist. Please try again.");
             }
         }
-        
+
         Game game;
         switch (level) {
             case 1:

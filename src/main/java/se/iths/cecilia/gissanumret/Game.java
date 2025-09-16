@@ -71,7 +71,11 @@ public class Game {
         System.out.println("Antal gissningar kvar: " + antalGissningar);
 
         int userNumber = 0;
-        userNumber = inputhandler.userNumberInputCheck();
+
+        do {
+            userNumber = inputhandler.userNumberInputCheck();
+        } while (userNumber == 0);
+
         guessIncorrect = compareUserNumberAndMyNumber(userNumber, myNumber);
         this.antalGissningar--;
         if (guessIncorrect) {
